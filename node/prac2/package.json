@@ -1,0 +1,21 @@
+{
+  "name": "npm-class",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ejemplo",
+    "de",
+    "mi",
+    "primer",
+    "proyecto"
+  ],
+  "author": "@Adolfo-SRE-MX",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^5.1.3"
+  }
+}
