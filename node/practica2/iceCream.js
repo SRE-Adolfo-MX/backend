@@ -107,3 +107,12 @@ let contenedor2 = stocks.holder[1]
 let topping2 = stocks.toppings[3]
 
 frappe(fruit2, liquido2, contenedor2, topping2)
+
+
+
+let fruit3 = stocks.fruits[2]
+let liquido3 = stocks.liquid[1]
+let contenedor3 = stocks.holder[2]
+let topping3 = stocks.toppings[1]
+
+frappe(fruit3, liquido3, contenedor3, topping3)
