@@ -42,8 +42,12 @@ const anadirAguaHielo = (param) => {
     return new Promise((resolve, reject) => {
         setTimeout(()=>{
             let liquid = stocks.liquid[param]
-            console.log(`Se uso el liquido: ${liquid}`);
-            resolve(param); //este es el parametro que le manda la variable a la siguiente funcion
+            if (liquid) {
+                console.log(`Se uso el liquido: ${liquid}`);
+                resolve(param);
+            } else {
+                reject(`La bebida con posicion: ${param} no existe`);
+            }
         }, 1000);
     })
 };
@@ -87,6 +91,9 @@ const servirHelado = (param) => {
     })
 };
 
+const mesajeError = (mensaje) => {
+    console.error("Error :", mensaje)
+}
 
 colocarOrden(1)
 .then(cortarFruta)
@@ -95,6 +102,7 @@ colocarOrden(1)
 .then(seleccionarContenedor)
 .then(toping)
 .then(servirHelado)
+.catch(mesajeError)
 .finally(()=>{
     console.log("Proceso terminado");
 });
