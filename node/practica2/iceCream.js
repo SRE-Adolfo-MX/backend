@@ -93,26 +93,26 @@ let topping = stocks.toppings[0]
 
 frappe(fruit, liquido, contenedor, topping)
 
-let fruit1 = stocks.fruits[1]
-let liquido1 = stocks.liquid[1]
-let contenedor1 = stocks.holder[1]
-let topping1 = stocks.toppings[1]
+fruit = stocks.fruits[1]
+liquido = stocks.liquid[1]
+contenedor = stocks.holder[1]
+topping = stocks.toppings[1]
 
-frappe(fruit1, liquido1, contenedor1, topping1)
-
-
-let fruit2 = stocks.fruits[3]
-let liquido2 = stocks.liquid[1]
-let contenedor2 = stocks.holder[1]
-let topping2 = stocks.toppings[3]
-
-frappe(fruit2, liquido2, contenedor2, topping2)
+frappe(fruit, liquido, contenedor, topping)
 
 
+fruit = stocks.fruits[3]
+liquido = stocks.liquid[1]
+contenedor = stocks.holder[1]
+topping = stocks.toppings[3]
 
-let fruit3 = stocks.fruits[2]
-let liquido3 = stocks.liquid[1]
-let contenedor3 = stocks.holder[2]
-let topping3 = stocks.toppings[1]
+frappe(fruit, liquido, contenedor, topping)
 
-frappe(fruit3, liquido3, contenedor3, topping3)
+
+
+fruit = stocks.fruits[2]
+liquido = stocks.liquid[1]
+contenedor = stocks.holder[2]
+topping = stocks.toppings[1]
+
+frappe(fruit, liquido, contenedor, topping)
