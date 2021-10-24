@@ -2,7 +2,12 @@ const { response } = require("express");
 const express = require("express");
 const app = express();
 const port = 8000;
-const faker = require("faker");
+const apiRouter = require("./routers")
+const {logErrors, errorHandler} = require("./middlewares/errorHandlers")
+
+app.use(express.json())
+//const faker = require("faker");
+
 
 app.get("/", (request, response) =>{
     response.send("HELLO WORLD!")
@@ -20,6 +25,7 @@ app.get("/nueva-ruta", (req, res) =>{
     });
 }) */
 
+/*
 app.get("/products", (req, res) =>{
     const products = []
     const { limit } = req.query;
@@ -41,7 +47,7 @@ app.get("/products", (req, res) =>{
                 limit,
             },
             {name: "Product 2", price: 2000}
-        ] */})
+        ] })
     } else {
         res.json({
             ok: false, 
@@ -49,81 +55,16 @@ app.get("/products", (req, res) =>{
         });
     }
 });
-
+*/
 // EJERCICIO 
 
-app.get("/categories", (req, res) =>{
-    const categor = []
-    const { limit } = req.query;
-    for (let i = 0; i < limit; i ++ ){
-        categor.push({
-            department: faker.commerce.department(),
-            product: faker.commerce.product(),
-            productDescription: faker.commerce.productDescription(),           
-        });
-    }
-    if (limit) {
-        res.json({
-            ok: true,
-            payload : categor,
-        })
-    } else {
-        res.json({
-            ok: false, 
-            message: "El limite y la pagina son obligatorios",
-        });
-    }
-});
 
-app.get("/category/:id", (req, res) =>{
-    //id = req.params.id;
-    const {id} = req.params
-    res.json({
-        id,
-        department: faker.commerce.department(),
-        product: faker.commerce.product(),
-        productDescription: faker.commerce.productDescription(),  
-    })
-})
 
-app.get("/users", (req, res) =>{
-    const users = []
-    const { limit } = req.query;
-    for (let i = 0; i < limit; i ++ ){
-        users.push({
-            name: faker.name.firstName(),
-            lastName: faker.name.lastName(),
-            jobTitle: faker.name.jobTitle(),        
-        });
-    }
-    if (limit) {
-        res.json({
-            ok: true,
-            payload : users,
-        })
-    } else {
-        res.json({
-            ok: false, 
-            message: "El limite y la pagina son obligatorios",
-        });
-    }
-});
- 
-app.get("/user/:id", (req, res) =>{
-    //id = req.params.id;
-    const {id} = req.params
-    res.json({
-        id,
-        name: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        jobTitle: faker.name.jobTitle(), 
-    })
-})
 
 // FIN EJERCICIO
 
 
-app.get("/products/:id", (req, res) =>{
+/* app.get("/products/:id", (req, res) =>{
     //id = req.params.id;
     const {id} = req.params
     res.json({
@@ -131,7 +72,7 @@ app.get("/products/:id", (req, res) =>{
         name: "Producto1",
         price: 1000,
     })
-})
+}) */
 
 
 /* app.get("/category/:categoryId/product/:productId", (req, res) =>{
@@ -144,6 +85,13 @@ app.get("/products/:id", (req, res) =>{
     })
 })
  */
+
+
+apiRouter(app);
+
+app.use(logErrors);
+app.use(errorHandler);
+
 app.listen(port, ()=>{
     console.log("Listening on port:", port)
 });
