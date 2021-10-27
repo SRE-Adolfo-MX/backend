@@ -2,53 +2,35 @@ const { response } = require("express");
 const express = require("express");
 const faker = require("faker");
 const authHandler = require("../middlewares/authHandlres");
+const product = require("../usescases/products")
+
 
 const router = express.Router()
 
-router.get("/", (req, res) =>{
-    const products = []
+router.get("/", async (req, res, next) => {
+    const products = [];
     const { limit } = req.query;
-    for (let i = 0; i < limit; i ++ ){
-        products.push({
-            name: faker.commerce.productName(),
-            price: parseInt(faker.commerce.price(), 10),
-            image: faker.image.imageUrl(),
-        });
+  
+    try {
+      const products = await product.get();
+      res.json({
+        ok: true,
+        message: "Done!",
+        payload: { products },
+      });
+    } catch (error) {
+      next(error);
     }
-    //const {limit} = req.query
-    if (limit) {
-        res.json({
-            ok: true,
-            payload : products,/* [
-            {
-                name: `Product 1`,
-                price: 1000,
-                limit,
-            },
-            {name: "Product 2", price: 2000}
-        ] */})
-    } else {
-        res.json({
-            ok: false, 
-            message: "El limite y la pagina son obligatorios",
-        });
-    }
-});
-
+  });
+ 
 router.get("/:id", (req, res, next) =>{
-    //id = req.params.id;
     const {id} = req.params
     try {
         throw "Error Generico";
     } catch (error) {
         next(error);
     }
-/*     res.json({
-        id,
-        name: "Producto1",
-        price: 1000,
-    }) */
-});
+}); 
 
 router.use(authHandler);
 
@@ -99,3 +81,10 @@ router.delete("/:id", (req, res)=>{
 })
 
 module.exports = router;
+
+/* module.exports = {
+    get,
+    getByID,
+    del,
+    update,
+};  */

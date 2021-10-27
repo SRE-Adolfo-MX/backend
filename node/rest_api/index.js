@@ -4,6 +4,8 @@ const app = express();
 const port = 8000;
 const apiRouter = require("./routers")
 const {logErrors, errorHandler} = require("./middlewares/errorHandlers")
+const db = require("./lib/db")
+
 
 app.use(express.json())
 //const faker = require("faker");
@@ -93,5 +95,12 @@ app.use(logErrors);
 app.use(errorHandler);
 
 app.listen(port, ()=>{
+
     console.log("Listening on port:", port)
+    db.connect().then(()=>{
+        console.log("DB Connect");
+    }).catch((err)=> {
+        console.error("Connection error", err)
+    })
+
 });
