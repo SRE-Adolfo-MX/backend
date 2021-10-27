@@ -1,6 +1,7 @@
 const { response } = require("express");
 const express = require("express");
 const faker = require("faker");
+const authHandler = require("../middlewares/authHandlres");
 
 const router = express.Router()
 
@@ -49,6 +50,8 @@ router.get("/:id", (req, res, next) =>{
     }) */
 });
 
+router.use(authHandler);
+
 router.post('/', (req, res)=> {
     const body = req.body;
     res.status(201).json({
@@ -59,6 +62,8 @@ router.post('/', (req, res)=> {
         },
     });
 })
+
+
 
 router.patch("/:id", (req, res)=>{
     const {id} = req.params;
