@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
       const products = await product.get();
       res.json({
         ok: true,
-        message: "Done!",
+        message: "Done GET-ALL!",
         payload: { products },
       });
     } catch (error) {
@@ -23,62 +23,80 @@ router.get("/", async (req, res, next) => {
     }
   });
  
-router.get("/:id", (req, res, next) =>{
-    const {id} = req.params
+router.get("/:id", async (req, res, next) => {
+    const { id } = req.params;
+
     try {
-        throw "Error Generico";
+        const productID = await product.getById(id);
+        res.json({
+            ok: true,
+            message: `Done! ${id}`,
+            payload: productID,
+        });
     } catch (error) {
         next(error);
     }
-}); 
+});
 
 router.use(authHandler);
 
-router.post('/', (req, res)=> {
-    const body = req.body;
-    res.status(201).json({
+router.post("/", async (request, response, next) => {
+    try {
+      const productData = request.body;
+      const productCreated = await product.create(productData);
+  
+      response.status(201).json({
         ok: true,
-        message: "Created successfully",
-        payload : {
-            body,
+        message: "New product created",
+        payload: {
+          product: productCreated,
         },
-    });
-})
-
-
-
-router.patch("/:id", (req, res)=>{
-    const {id} = req.params;
-    const {name, price} = req.body;
-
-    if (id === "99"){
-        res.status(404).json({
-            ok: false,
-            message: `Product not found`,
-        })
-    }else {
-
-        
-        res.status(201).json({
-            ok: true,
-            message: `Updated ${id} successfully`,
-            payload : {
-                name,
-                price,
-            },
-        })
-
+      });
+    } catch (error) {
+      next(error);
     }
+  });
 
-})
 
-router.delete("/:id", (req, res)=>{
-    const {id}=req.params;
-    res.status(202).json({
-        ok: true,
-        message: `Product ${id} deleted successfully`,
-    })
-})
+
+  router.patch("/:id", async (req, res, next) => {
+    const { id } = req.params;
+    const { name, price } = req.body;
+    
+    try {
+        const productData = req.body;
+        const productUpdated = await product.update(id,{name, price});
+
+        res.status(201).json({
+          ok: true,
+          message: "Product updated",
+          payload: {
+            product: productUpdated,
+          },
+        });
+      } catch (error) {
+        next(error);
+      }
+  });
+  
+
+  router.delete("/:id", async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const productDeleted = await product.del(id);
+
+        res.status(201).json({
+          ok: true,
+          message: "Product Deleted",
+          payload: {
+            product: productDeleted,
+          },
+        });
+      } catch (error) {
+        next(error);
+      }
+  });
 
 module.exports = router;
 

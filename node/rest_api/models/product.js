@@ -10,7 +10,7 @@ const schema = new Schema({
         maxlenght: 20,
         minlenght: 1
     },
-    Price:{
+    price:{
         type: Number,
         require: true,
     },
