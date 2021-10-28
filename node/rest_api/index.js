@@ -4,8 +4,11 @@ const app = express();
 const port = 8000;
 const apiRouter = require("./routers")
 const {logErrors, errorHandler} = require("./middlewares/errorHandlers")
-const db = require("./lib/db")
+const db = require("./lib/db");
+const authHandler = require("./middlewares/authHandlres");
 
+
+app.use(authHandler);
 
 app.use(express.json())
 //const faker = require("faker");
@@ -90,6 +93,7 @@ app.get("/products", (req, res) =>{
 
 
 apiRouter(app);
+
 
 app.use(logErrors);
 app.use(errorHandler);
