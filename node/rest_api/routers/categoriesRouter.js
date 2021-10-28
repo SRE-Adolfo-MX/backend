@@ -1,54 +1,61 @@
 const { response } = require("express");
 const express = require("express");
 const faker = require("faker");
+const authHandler = require("../middlewares/authHandlres");
+const category = require("../usescases/categories");
 
 const router = express.Router()
 
 
-router.get("/", (req, res, next) =>{
+router.get("/", async (req, res, next) =>{
     const categor = []
     const { limit } = req.query;
-    for (let i = 0; i < limit; i ++ ){
-        categor.push({
-            department: faker.commerce.department(),
-            product: faker.commerce.product(),
-            productDescription: faker.commerce.productDescription(),           
+
+    try {
+        const categories = await category.get();
+        res.json({
+          ok: true,
+          message: "Done GET-ALL!",
+          payload: { categories },
         });
-    }
-    if (limit) {
+      } catch (error) {
+        next(error);
+      }
+});
+
+router.get("/:id", async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const categoryID = await category.getById(id);
         res.json({
             ok: true,
-            payload : categor,
-        })
-    } else {
-        res.json({
-            ok: false, 
-            message: "El limite y la pagina son obligatorios",
+            message: `Done! ${id}`,
+            payload: categoryID,
         });
+    } catch (error) {
+        next(error);
     }
 });
 
-router.get("/:id", (req, res, next) =>{
-    //id = req.params.id;
-    const {id} = req.params
-    res.json({
-        id,
-        department: faker.commerce.department(),
-        product: faker.commerce.product(),
-        productDescription: faker.commerce.productDescription(),  
-    })
-})
+router.use(authHandler);
 
-router.post('/', (req, res, next)=> {
-    const body = req.body;
-    res.status(201).json({
+router.post("/", async (req, re, next) => {
+    try {
+      const categoryData = req.body;
+      const categoryCreated = await category.create(categoryData);
+  
+      response.status(201).json({
         ok: true,
-        message: "Created category successfully",
-        payload : {
-            body,
+        message: "New category created",
+        payload: {
+          product: categoryCreated,
         },
-    });
-})
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
 
 router.patch("/:id", (req, res, next)=>{
     const {id} = req.params;
