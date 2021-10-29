@@ -40,22 +40,22 @@ router.get("/:id", async (req, res, next) => {
 
 router.use(authHandler);
 
-router.post("/", async (req, re, next) => {
+router.post("/", async (req, res, next) => {
     try {
-      const categoryData = req.body;
-      const categoryCreated = await category.create(categoryData);
-  
-      response.status(201).json({
+        const categoryData = req.body;
+        const categoryCreated = await category.create(categoryData);
+
+        res.status(201).json({
         ok: true,
         message: "New category created",
         payload: {
-          product: categoryCreated,
+            product: categoryCreated,
         },
-      });
+        });
     } catch (error) {
-      next(error);
+        next(error);
     }
-  });
+});
 
 router.patch("/:id", (req, res, next)=>{
     const {id} = req.params;
