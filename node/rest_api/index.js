@@ -8,7 +8,7 @@ const db = require("./lib/db");
 const authHandler = require("./middlewares/authHandlres");
 
 
-app.use(authHandler);
+// app.use(authHandler);
 
 app.use(express.json())
 //const faker = require("faker");

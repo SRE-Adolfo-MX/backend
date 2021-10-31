@@ -1,7 +1,7 @@
 const productsRouter = require("./productsRouter");
 const categoriesRouter = require("./categoriesRouter");
 const userRouter = require("./userRouter");
-const userRouter = require("./authRouter");
+const authRouter = require("./authRouter");
 
 const apiRouter = (app) => {
     app.use('/products', productsRouter);
