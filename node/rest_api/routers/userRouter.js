@@ -1,87 +1,55 @@
 const express = require("express");
+const users = require("../usecases/users");
+
 const router = express.Router();
-const faker = require("faker");
 
-
-router.get("/", (req, res) =>{
-    const users = []
-    const { limit } = req.query;
-    for (let i = 0; i < limit; i ++ ){
-        users.push({
-            name: faker.name.firstName(),
-            lastName: faker.name.lastName(),
-            jobTitle: faker.name.jobTitle(),        
-        });
-    }
-    if (limit) {
-        res.json({
-            ok: true,
-            payload : users,
-        })
-    } else {
-        res.json({
-            ok: false, 
-            message: "El limite y la pagina son obligatorios",
-        });
-    }
+router.get("/", (req, res) => {
+  res.json([
+    {
+      id: 1,
+      username: "alfredoa",
+      firstName: "Alfredo",
+      lastName: "Altamirano",
+    },
+    {
+      id: 2,
+      username: "clauro",
+      firstName: "Claudia",
+      lastName: "Rodrigez",
+    },
+  ]);
 });
- 
-router.get("/:id", (req, res) =>{
-    //id = req.params.id;
-    const {id} = req.params
-    res.json({
-        id,
-        name: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        jobTitle: faker.name.jobTitle(), 
-    })
-})
 
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  res.status(200).json({
+    id,
+    username: "alfredoa",
+    firstName: "Alfredo",
+    lastName: "Altamirano",
+  });
+});
 
-router.post('/', (req, res, next)=> {
-    const body = req.body;
-    res.status(201).json({
-        ok: true,
-        message: "Created user successfully",
-        payload : {
-            body,
-        },
+router.post("/", async (req, res, next) => {
+  try {
+    const { firstName, lastName, username, password, email } = req.body;
+
+    const createdUser = await users.create({
+      firstName,
+      lastName,
+      username,
+      password,
+      email,
     });
-})
 
-router.patch("/:id", (req, res, next)=>{
-    const {id} = req.params;
-    const {name, lastName, jobTitle} = req.body;
-
-    if (id === "99"){
-        res.status(404).json({
-            ok: false,
-            message: `User not exist`,
-        })
-    }else {
-
-        
-        res.status(201).json({
-            ok: true,
-            message: `Updated user ${id} successfully`,
-            payload : {
-                id,
-                name,
-                lastName,
-                jobTitle, 
-            },
-        })
-
-    }
-
-})
-
-router.delete("/:id", (req, res, next)=>{
-    const {id}=req.params;
-    res.status(202).json({
-        ok: true,
-        message: `User ${id} deleted successfully`,
-    })
-})
+    res.status(201).json({
+      ok: true,
+      message: "User created successfully",
+      payload: createdUser,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;
