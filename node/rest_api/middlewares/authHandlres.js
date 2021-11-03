@@ -1,14 +1,20 @@
-const authHandler = (req, res, next) => {
-    //const { auth  } = req.body.headers;
-    const { apitoken  } = req.headers;
-    if (apitoken === "TOKEN-123") {
-        next();
-    } else {
-        res.status(403).json({
-            ok: false,
-            message: "Unauthorized",
-        });
-    }
-};
+const jwt = require("../lib/jwt");
 
-module.exports = authHandler;
+const authHandler = async (req, res, next) => {
+  //const { auth  } = req.body.headers;
+    const { token } = req.body;
+    //const { apitoken } = req.body;
+    console.log(token)
+    const tokenR = await jwt.verify(token);
+
+    if (tokenR.role === "admin") {
+      next();
+    } else {
+      res.status(403).json({
+        ok: false,
+        message: "Unauthorized",
+      });
+    }
+  };
+  
+  module.exports = authHandler;

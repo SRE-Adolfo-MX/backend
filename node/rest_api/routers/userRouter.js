@@ -3,41 +3,44 @@ const users = require("../usescases/users");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json([
-    {
-      id: 1,
-      username: "alfredoa",
-      firstName: "Alfredo",
-      lastName: "Altamirano",
-    },
-    {
-      id: 2,
-      username: "clauro",
-      firstName: "Claudia",
-      lastName: "Rodrigez",
-    },
-  ]);
+router.get("/", async (req, res, next) => {
+ 
+  try {
+      const allUsers = await users.get();
+      res.json({
+          ok: true,
+          message: `All Users`,
+          payload: allUsers,
+      });
+  } catch (error) {
+      next(error);
+  }
 });
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
-  res.status(200).json({
-    id,
-    username: "alfredoa",
-    firstName: "Alfredo",
-    lastName: "Altamirano",
-  });
+router.get("/:id", async (req, res, next) => {
+ const {username} = req.body;
+  try {
+      const userName = await users.getByUsername(username);
+      res.json({
+          ok: true,
+          message: `userName ${username}`,
+          payload: userName,
+      });
+  } catch (error) {
+      next(error);
+  }
 });
+
 
 router.post("/", async (req, res, next) => {
   try {
-    const { firstName, lastName, username, password, email } = req.body;
+    const { firstName, lastName, username, role, password, email } = req.body;
 
     const createdUser = await users.create({
       firstName,
       lastName,
       username,
+      role,
       password,
       email,
     });

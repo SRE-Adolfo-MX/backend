@@ -25,6 +25,14 @@ const schema = new Schema({
     minlength: 1,
     unique: true,
   },
+  role: {
+    type: String,
+    required: false,
+    trim: true,
+    maxlength: 50,
+    minlength: 1,
+    unique: false,
+  },
   password: {
     type: String,
     required: true,

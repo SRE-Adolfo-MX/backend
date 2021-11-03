@@ -38,7 +38,7 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
-router.use(authHandler);
+// router.use(authHandler);
 
 router.post("/", async (request, response, next) => {
     try {
